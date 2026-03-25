@@ -1,0 +1,54 @@
+{
+  "name": "@licensekit/sdk",
+  "version": "0.1.0-alpha.0",
+  "description": "TypeScript SDK for licensekit.dev",
+  "license": "UNLICENSED",
+  "private": false,
+  "homepage": "https://licensekit.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drmain1/licensekit-typescript.git"
+  },
+  "bugs": {
+    "url": "https://github.com/drmain1/licensekit-typescript/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "generate:types": "openapi-typescript ./openapi/openapi.yaml -o ./generated/openapi.ts",
+    "generate:scopes": "node ./scripts/generate-scopes.mjs",
+    "generate:operations": "node ./scripts/generate-operations.mjs",
+    "generate": "npm run generate:types && npm run generate:scopes && npm run generate:operations",
+    "build": "npm run generate && tsup src/index.ts --format esm,cjs --dts --out-dir dist",
+    "typecheck": "npm run generate && tsc --noEmit",
+    "test": "npm run generate && vitest run"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.13.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.1",
+    "yaml": "^2.8.3"
+  }
+}
